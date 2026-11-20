@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Neon Dashboard (`k20-day46-nextjs-neon-dashboard`)
 
-## Getting Started
+Ứng dụng Dashboard quản lý hóa đơn và khách hàng sử dụng Next.js App Router và Neon Postgres.
 
-First, run the development server:
+## 1. Cài đặt
+
+Clone repository và cài đặt các gói phụ thuộc bằng `pnpm`:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <url-repo-cua-ban>
+cd k20-day46-nextjs-neon-dashboard
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 2. Cấu hình Database Neon
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Tạo một database mới trên Neon Postgres (hoặc qua Vercel Postgres) dành riêng cho bài tập này.
+2. Mở **SQL Editor** của Neon, sao chép và chạy toàn bộ nội dung trong file `db.sql` ở thư mục gốc của repo để khởi tạo bảng `customers` (4 dòng) và `invoices` (12 dòng).
+3. Tạo file `.env.local` ở thư mục gốc của dự án và khai báo chuỗi kết nối `DATABASE_URL` (không dùng tiền tố `NEXT_PUBLIC_`):
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+DATABASE_URL="postgresql://<user>:<password>@<host>/<dbname>?sslmode=require"
+```
 
-## Learn More
+> **Lưu ý:** File `.env.local` đã được loại trừ trong `.gitignore`, tuyệt đối không đưa `DATABASE_URL` lên GitHub.
 
-To learn more about Next.js, take a look at the following resources:
+## 3. Chạy ứng dụng
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Khởi chạy server phát triển ở chế độ development:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm dev
+```
 
-## Deploy on Vercel
+Mở trình duyệt và truy cập địa chỉ `http://localhost:3000`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 4. Các URL cần mở để kiểm tra
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `http://localhost:3000` — Trang chủ giới thiệu ứng dụng.
+- `http://localhost:3000/dashboard` — Trang tổng quan hiển thị 5 hóa đơn mới nhất (ID 12, 11, 10, 9, 8).
+- `http://localhost:3000/dashboard/invoices` — Trang danh sách hóa đơn hỗ trợ tìm kiếm theo tên khách hàng (`?search=...`) và phân trang 5 hóa đơn/trang (`?page=...`).
+- `http://localhost:3000/dashboard/invoices?search=Minh&page=2` — Kiểm tra đồng bộ ô tìm kiếm và trang hiện tại trực tiếp từ URL.
+- `http://localhost:3000/dashboard/customers` — Trang danh sách khách hàng sắp xếp theo ID (`Minh`, `Hoa`, `Phúc`, `Lan`).
